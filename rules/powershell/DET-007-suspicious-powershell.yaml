@@ -1,0 +1,47 @@
+# Suspicious PowerShell behaviour, scored from explainable indicators in script-block
+# text (Event 4104) plus the PowerShell process's context (parent, command line).
+# PowerShell is not malicious by itself: a finding needs several indicators, or one
+# strong one (download-and-execute, AMSI bypass, Defender tampering, credential theft).
+rule_id: DET-007
+version: "1.0"
+title: Suspicious PowerShell Behavior
+kind: detection
+severity: MEDIUM     # per finding: HIGH when the score reaches high_at
+confidence: MEDIUM   # per finding: HIGH when the score reaches high_at
+description: >-
+  A PowerShell script block contained behaviour often used by attackers, such as
+  downloading and running code, decoding hidden payloads, bypassing AMSI or
+  Defender, or obfuscation. Each indicator and the points it added are listed.
+  Administrators and security tools use some of the same techniques, so review
+  the script and its parent process.
+mitre:
+  - id: T1059.001
+    name: "Command and Scripting Interpreter: PowerShell"
+    tactic: Execution
+parameters:
+  event_id: 4104
+  threshold: 3   # points needed for a finding
+  high_at: 6     # points for HIGH severity and confidence
+  # Parents that rarely start PowerShell legitimately (+2 when they did).
+  unusual_parents:
+    - winword.exe
+    - excel.exe
+    - powerpnt.exe
+    - outlook.exe
+    - onenote.exe
+    - mshta.exe
+    - wscript.exe
+    - cscript.exe
+    - regsvr32.exe
+    - rundll32.exe
+    - msbuild.exe
+false_positives:
+  - Administrator or deployment scripts that download and run installers
+  - Security, inventory or monitoring tools that inspect AMSI or Defender settings
+  - Penetration tests and red-team exercises
+  - Developer tooling that loads assemblies from memory
+recommended_investigation:
+  - Read the excerpts and the full script in the raw event (stored locally only)
+  - Check the parent process and the user; was this expected for them?
+  - Look at what the PowerShell process did next (process tree, network, DNS, files)
+  - Search for the same script hash on other machines

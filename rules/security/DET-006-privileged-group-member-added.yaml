@@ -1,0 +1,42 @@
+# A member added to a privileged LOCAL group (Event 4732). Groups are recognised by
+# their well-known SID, because group names are localized ("Administratoren").
+rule_id: DET-006
+version: "1.0"
+title: Account Added to Privileged Local Group
+kind: detection
+severity: HIGH       # per finding: HIGH for administrator-equivalent groups, else MEDIUM
+confidence: HIGH     # LOW when the group could only be recognised by its name
+description: >-
+  An account was added to a privileged local group. Members of administrator-
+  equivalent groups control the computer, and members of remote-access groups
+  can log on remotely. Administrators do this legitimately, but it is also a
+  common way to keep or escalate access.
+mitre:
+  - id: T1098.007
+    name: "Account Manipulation: Additional Local or Domain Groups"
+    tactic: Persistence, Privilege Escalation
+parameters:
+  event_id: 4732
+  # Built-in groups, by well-known SID (S-1-5-32-RID), and their tier.
+  # high: administrator-equivalent; medium: remote access or elevated capability.
+  privileged_groups:
+    S-1-5-32-544: [high, Administrators]
+    S-1-5-32-548: [high, Account Operators]
+    S-1-5-32-549: [high, Server Operators]
+    S-1-5-32-551: [high, "Backup Operators (can read any file, including credential stores)"]
+    S-1-5-32-550: [medium, Print Operators]
+    S-1-5-32-555: [medium, Remote Desktop Users]
+    S-1-5-32-562: [medium, Distributed COM Users]
+    S-1-5-32-578: [medium, Hyper-V Administrators]
+    S-1-5-32-580: [medium, Remote Management Users]
+  # Used only when Windows recorded no group SID; such matches get LOW confidence.
+  fallback_group_names: [administrators]
+false_positives:
+  - An administrator granting rights to a new colleague or a support account
+  - Software or management tools that add their service account to a group
+  - Temporary elevation for troubleshooting that was not reverted
+recommended_investigation:
+  - Confirm the change with the person who made it ("Added by")
+  - Check whether the member account is new (DET-005, COR-002) and who uses it
+  - Review the actor's logon session for other changes
+  - Remove the membership if it was not authorized, and reset the account's password

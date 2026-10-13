@@ -1,0 +1,10 @@
+MoeSOC Endpoint is a local, read-only Windows detection and investigation tool.
+
+- It reads the Windows Security log (and Sysmon, PowerShell and Microsoft Defender
+  logs when present). Reading the Security log needs administrator rights, so MoeSOC
+  asks with the standard Windows prompt when it starts.
+- It never changes audit policy, never installs Sysmon, never blocks, kills or
+  quarantines anything, and never sends data anywhere. Findings are leads for
+  investigation, not proof of compromise.
+- Your data is stored in %LOCALAPPDATA%\MoeSOC. Uninstalling keeps it; delete that
+  folder yourself if you want it removed. Windows event logs are never touched.

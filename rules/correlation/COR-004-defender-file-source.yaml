@@ -1,0 +1,26 @@
+# Cross-source: a file Microsoft Defender detected (1116), traced through Sysmon to the
+# process that wrote it (Event 11, same path), that process's DNS lookups and network
+# connections (Events 22 and 3, same ProcessGuid), and whether the file was started.
+rule_id: COR-004
+version: "1.0"
+title: Defender Detection Traced to Its Source
+kind: correlation
+severity: MEDIUM     # per finding: from Defender's severity; HIGH if executed or not remediated
+confidence: HIGH     # per finding: MEDIUM when the writer process start was not collected
+description: >-
+  Microsoft Defender detected a threat in a file, and Sysmon recorded which process
+  wrote that file shortly before, what that process looked up and connected to, and
+  whether the file was later started. The verdict is Microsoft Defender's; MoeSOC
+  shows where the file came from.
+mitre: []  # techniques are listed per finding (T1105 when a download was seen, T1204.002 when run)
+parameters:
+  file_window_minutes: 60   # the file must have been written at most this long before detection
+false_positives:
+  - Test files (EICAR) downloaded on purpose
+  - Security tools or archives that contain flagged samples
+  - Defender false positives on newly downloaded software
+recommended_investigation:
+  - Check the process that wrote the file and its parent (browser, mail client, script?)
+  - Look at the domains and addresses it contacted before writing the file
+  - If the file was started, open its process tree and review what it did
+  - Confirm Defender's remediation succeeded; if not, contain the host manually per your process

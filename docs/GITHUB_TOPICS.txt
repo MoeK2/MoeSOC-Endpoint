@@ -1,0 +1,13 @@
+cybersecurity
+soc
+blue-team
+windows
+threat-detection
+detection-engineering
+incident-response
+mitre-attack
+windows-event-log
+security-monitoring
+python
+pyside6
+sqlite

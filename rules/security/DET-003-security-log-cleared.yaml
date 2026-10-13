@@ -1,0 +1,26 @@
+rule_id: DET-003
+version: "1.0"
+title: Windows Security Log Cleared
+kind: detection
+severity: HIGH
+confidence: HIGH   # high that the clearing happened; says nothing about intent
+description: >-
+  The Windows Security audit log was cleared (Event 1102). Windows itself records
+  this, so it is reliable that the clearing happened. Clearing destroys evidence
+  and is a common anti-forensics step, but administrators also clear logs during
+  maintenance; the finding does not show whether this one was malicious.
+mitre:
+  - id: T1070.001
+    name: "Indicator Removal: Clear Windows Event Logs"
+    tactic: Defense Evasion
+parameters:
+  event_id: 1102
+false_positives:
+  - Authorized administrative maintenance
+  - Lab, test or training activity
+  - Troubleshooting that resets the log
+recommended_investigation:
+  - Confirm with the account that cleared the log whether it was planned
+  - Check what that account did before and after (timeline around the event)
+  - Look for other anti-forensics such as disabled auditing or deleted files
+  - Recover older events from backups or a log collector if one exists

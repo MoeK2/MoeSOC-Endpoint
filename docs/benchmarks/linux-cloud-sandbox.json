@@ -1,0 +1,117 @@
+{
+  "machine": {
+    "platform": "Linux-6.18.44-fc-v80-x86_64-with-glibc2.39",
+    "python": "3.13.16",
+    "processor": "x86_64",
+    "cpu_count": 2,
+    "moesoc": "1.0.0",
+    "measured_at": "2026-10-09 09:39 UTC",
+    "note": "Real timings on synthetic events; host name intentionally not recorded."
+  },
+  "results": [
+    {
+      "events": 1000,
+      "stored": 1000,
+      "findings": 2,
+      "search_totals": [
+        443,
+        993,
+        7
+      ],
+      "story_steps": 2,
+      "report_bytes": 5393,
+      "db_mb": 1.9,
+      "seconds": {
+        "parse": 0.063,
+        "store": 0.038,
+        "detect": 0.07,
+        "search": 0.015,
+        "story": 0.001,
+        "report": 0.002
+      },
+      "events_per_second": {
+        "parse": 15839,
+        "store": 26100,
+        "detect": 14224
+      }
+    },
+    {
+      "events": 10000,
+      "stored": 10000,
+      "findings": 10,
+      "search_totals": [
+        4435,
+        9965,
+        35
+      ],
+      "story_steps": 2,
+      "report_bytes": 5396,
+      "db_mb": 17.6,
+      "seconds": {
+        "parse": 0.605,
+        "store": 0.335,
+        "detect": 0.751,
+        "search": 0.05,
+        "story": 0.002,
+        "report": 0.002
+      },
+      "events_per_second": {
+        "parse": 16516,
+        "store": 29872,
+        "detect": 13322
+      }
+    },
+    {
+      "events": 50000,
+      "stored": 50000,
+      "findings": 50,
+      "search_totals": [
+        22175,
+        49825,
+        175
+      ],
+      "story_steps": 3,
+      "report_bytes": 5556,
+      "db_mb": 87.7,
+      "seconds": {
+        "parse": 3.188,
+        "store": 1.864,
+        "detect": 4.235,
+        "search": 0.175,
+        "story": 0.003,
+        "report": 0.003
+      },
+      "events_per_second": {
+        "parse": 15682,
+        "store": 26819,
+        "detect": 11805
+      }
+    },
+    {
+      "events": 100000,
+      "stored": 100000,
+      "findings": 104,
+      "search_totals": [
+        44350,
+        99650,
+        350
+      ],
+      "story_steps": 3,
+      "report_bytes": 5565,
+      "db_mb": 176.0,
+      "seconds": {
+        "parse": 6.186,
+        "store": 3.928,
+        "detect": 10.036,
+        "search": 0.316,
+        "story": 0.004,
+        "report": 0.004
+      },
+      "events_per_second": {
+        "parse": 16166,
+        "store": 25457,
+        "detect": 9964
+      }
+    }
+  ]
+}

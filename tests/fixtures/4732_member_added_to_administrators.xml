@@ -1,0 +1,30 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-a5ba-3e3b0328c30d}" />
+    <EventID>4732</EventID>
+    <Version>0</Version>
+    <Level>0</Level>
+    <Task>13826</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8020000000000000</Keywords>
+    <TimeCreated SystemTime="2026-10-06T10:01:40.2000000Z" />
+    <EventRecordID>100604</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="812" ThreadID="1200" />
+    <Channel>Security</Channel>
+    <Computer>WS-LAB01.lab.example</Computer>
+    <Security />
+  </System>
+  <EventData>
+    <Data Name="MemberName">-</Data>
+    <Data Name="MemberSid">S-1-5-21-7777777777-8888888888-9999999999-1009</Data>
+    <Data Name="TargetUserName">Administratoren</Data>
+    <Data Name="TargetDomainName">VORDEFINIERT</Data>
+    <Data Name="TargetSid">S-1-5-32-544</Data>
+    <Data Name="SubjectUserSid">S-1-5-21-7777777777-8888888888-9999999999-1001</Data>
+    <Data Name="SubjectUserName">labadmin</Data>
+    <Data Name="SubjectDomainName">WS-LAB01</Data>
+    <Data Name="SubjectLogonId">0x8a1f3</Data>
+    <Data Name="PrivilegeList">-</Data>
+  </EventData>
+</Event>

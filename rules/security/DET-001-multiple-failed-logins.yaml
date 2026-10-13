@@ -1,0 +1,32 @@
+# Rule metadata and tunable parameters. The matching logic lives in
+# moesoc/engine/rules.py — YAML only describes and tunes it.
+rule_id: DET-001
+version: "1.2"   # 1.1: identity matching; 1.2: proven domain aliases (CORP = corp.local)
+title: Multiple Failed Logins
+kind: detection
+severity: MEDIUM
+confidence: MEDIUM
+description: >-
+  Multiple authentication failures were observed for the same account within a
+  short time window. This can be caused by password guessing, stale credentials,
+  automated services, or normal user error and requires investigation.
+mitre:
+  - id: T1110
+    name: Brute Force
+    tactic: Credential Access
+parameters:
+  event_id: 4625
+  threshold: 5          # failures for one account...
+  window_minutes: 5     # ...within this rolling window
+false_positives:
+  - User forgot or mistyped their password
+  - Stale saved credentials (mapped drive, RDP client, mobile mail)
+  - Scheduled task or service still configured with an old password
+  - Legitimate administrator activity
+  - Authorized security testing
+recommended_investigation:
+  - Check the failure reason (SubStatus) — wrong password vs. non-existent account tells different stories
+  - Review the source addresses and workstation names; are they expected for this user?
+  - Check the logon type (3 = network, 10 = RDP) and the calling process
+  - Look for a successful logon for the same account shortly afterwards (see COR-001)
+  - Confirm with the account owner if the activity is unexplained

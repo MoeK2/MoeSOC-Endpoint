@@ -1,0 +1,37 @@
+# A brand-new account given administrator-equivalent rights shortly after creation:
+# Event 4720 (account created) followed by Event 4732 (member added to a privileged
+# local group) for the SAME account SID on the same computer.
+#
+# Window: 30 minutes. "net user x /add" followed by "net localgroup administrators x
+# /add" usually happens within seconds or minutes, by script or by hand; 30 minutes
+# keeps the link short enough to be meaningful while covering a manual sequence.
+rule_id: COR-002
+version: "1.0"
+title: New Account Added to Administrators
+kind: correlation
+severity: HIGH
+confidence: HIGH     # MEDIUM when the group was recognised by name only
+description: >-
+  An account was created and then added to an administrator-equivalent group
+  within a short time. This is how attackers often create a persistent
+  administrator account. It is also what an administrator does when setting up
+  a legitimate admin account, so confirm the change with its owner.
+mitre:
+  - id: T1136.001
+    name: "Create Account: Local Account"
+    tactic: Persistence
+  - id: T1098.007
+    name: "Account Manipulation: Additional Local or Domain Groups"
+    tactic: Persistence, Privilege Escalation
+parameters:
+  window_minutes: 30
+  # Only the "high" tier of DET-006's groups counts as administrator-equivalent.
+  required_tier: high
+false_positives:
+  - Planned creation of an administrator account (onboarding, break-glass account)
+  - Deployment scripts that create a local admin account (for example LAPS setup)
+recommended_investigation:
+  - Ask the actor whether both changes were planned
+  - Check how the actor logged on (logon ID) and whether that session looked suspicious
+  - Check whether the new account has logged on, from where, and what it did
+  - Disable the account if the change is not confirmed

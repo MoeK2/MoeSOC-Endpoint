@@ -1,0 +1,1 @@
+Always-on, local-first Windows endpoint detection and investigation platform: a least-privilege sensor service, explainable detections and correlations, notifications, timelines and analyst triage.

@@ -1,0 +1,34 @@
+# Cross-source: failed logons, then a successful logon, then suspicious activity in the
+# SAME logon session (linked by logon ID) — account creation, privileged group change,
+# suspicious PowerShell (DET-007 scoring) — or a Defender detection for that user.
+rule_id: COR-003
+version: "1.0"
+title: Suspicious Activity After Failed Logons
+kind: correlation
+severity: HIGH
+confidence: HIGH     # per finding: MEDIUM when only a Defender detection matched by user and time
+description: >-
+  Several failed logons were followed by a successful logon for the same account,
+  and the new logon session then created an account, changed a local group, ran
+  PowerShell with suspicious indicators, or Microsoft Defender detected a threat
+  for that user. Each step lists which log it came from and how it is linked.
+mitre:
+  - id: T1110
+    name: Brute Force
+    tactic: Credential Access
+  - id: T1078
+    name: Valid Accounts
+    tactic: Defense Evasion, Persistence, Privilege Escalation, Initial Access
+parameters:
+  failure_threshold: 5        # failed logons for the same identity …
+  failure_window_minutes: 10  # … within this many minutes before the success
+  follow_window_minutes: 60   # activity in the session up to this long after the logon
+false_positives:
+  - An administrator who mistyped their password several times and then did routine admin work
+  - Help-desk or provisioning work done right after a password reset
+  - Defender detections of files the user downloaded on purpose (e.g. test files)
+recommended_investigation:
+  - Confirm with the account owner whether they logged on at that time and from that address
+  - Review each step of the chain, starting with the strongest (same logon session) links
+  - Open the process tree of any suspicious PowerShell and check what it connected to
+  - If confirmed, reset the password and review accounts or group changes made in the session

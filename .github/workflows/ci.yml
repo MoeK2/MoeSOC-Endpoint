@@ -1,0 +1,126 @@
+# Windows CI: lint, tests, CLI and GUI smoke on a real Windows machine, then the
+# packaged executable with its self-test. Read-only: nothing here changes the runner's
+# audit policy, installs Sysmon or writes to an event log.
+name: Windows CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: "1"
+      QT_QPA_PLATFORM: offscreen  # no display on the runner; screenshots still render
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
+          python -c "import PySide6, yaml, win32evtlog; print('PySide6', PySide6.__version__)"
+
+      - name: Ruff
+        run: |
+          python -m ruff check .
+          python -m ruff format --check .
+
+      - name: Tests
+        run: python -m pytest -v -rs
+
+      - name: CLI on the runner's real logs (read-only)
+        run: |
+          python -m moesoc.cli --data-dir ci-data health
+          python -m moesoc.cli --data-dir ci-data scan
+          python -m moesoc.cli --data-dir ci-data detections --all
+
+      - name: GUI smoke test
+        run: python scripts/gui_smoke.py
+
+      - name: Upload GUI screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gui-screenshots
+          path: docs/screenshots/*.png
+          retention-days: 7
+
+  build:
+    needs: test
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies and PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt "pyinstaller>=6.10,<7"
+
+      - name: Build MoeSOC.exe
+        run: python -m PyInstaller packaging/moesoc.spec --noconfirm --clean --distpath dist --workpath build/pyinstaller
+
+      - name: Self-test the packaged executable
+        shell: pwsh
+        run: |
+          $p = Start-Process -FilePath dist\MoeSOC\MoeSOC.exe -ArgumentList "--self-test" -Wait -PassThru
+          Get-Content "$env:LOCALAPPDATA\MoeSOC\logs\self-test.txt"
+          if ($p.ExitCode -ne 0) { throw "Self-test failed with exit code $($p.ExitCode)" }
+
+      - name: Build the installer (if Inno Setup is available on the runner)
+        shell: pwsh
+        run: |
+          $iscc = @("${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe", "$env:ProgramFiles\Inno Setup 6\ISCC.exe") |
+            Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (-not $iscc) { Write-Host "Inno Setup not found on this runner; skipping the installer."; exit 0 }
+          & $iscc packaging\MoeSOC.iss
+          if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed" }
+
+      - name: Checksums
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist\MoeSOC\* -DestinationPath dist\MoeSOC-win-x64.zip
+          Get-ChildItem dist\*.zip, dist\installer\*.exe -ErrorAction SilentlyContinue |
+            Get-FileHash -Algorithm SHA256 |
+            ForEach-Object { "$($_.Hash.ToLower())  $(Split-Path $_.Path -Leaf)" } |
+            Set-Content dist\SHA256SUMS.txt
+          Get-Content dist\SHA256SUMS.txt
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: moesoc-windows-x64
+          path: |
+            dist/MoeSOC-win-x64.zip
+            dist/installer/*.exe
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,47 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+*.spec
+!packaging/moesoc.spec
+
+# Local telemetry must never be committed
+*.db
+*.db-journal
+*.sqlite
+*.log
+data/
+*.bundle
+.verify-data/
+verify_output.txt
+elevated_scan_output.txt
+validation_output.txt
+validation_gui_output.txt
+
+# Real-machine validation screenshots show the hostname, username and SIDs.
+# They stay on the machine that produced them; never publish them unsanitized.
+docs/screenshots/real-*.png
+docs/private/
+eventlog_api_output.txt
+benchmark_output.txt
+build_output.txt
+ci-data/
+ci_local_output.txt
+demo_output.txt
+live-validation-data/
+live_delivery_output.txt
+live_delivery_console.txt
+audit/
+.pytest-tmp/
+sensor_benchmark_output.txt
+sensor_validation_output.txt
+sensor_uninstall_output.txt
+sensor_update_output.txt
+
+# Release staging (built from the source tree, never committed)
+/release/

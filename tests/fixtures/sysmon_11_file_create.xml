@@ -1,0 +1,28 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385f-c22a-43e0-bf4c-06f5698ffbd9}" />
+    <EventID>11</EventID>
+    <Version>2</Version>
+    <Level>4</Level>
+    <Task>11</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8000000000000000</Keywords>
+    <TimeCreated SystemTime="2026-10-06T08:21:14.0000000Z" />
+    <EventRecordID>5003</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="3120" ThreadID="4404" />
+    <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
+    <Computer>WS-LAB01.lab.example</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData>
+    <Data Name="RuleName">-</Data>
+    <Data Name="UtcTime">2026-10-06 08:21:14.000</Data>
+    <Data Name="ProcessGuid">{8A1C5F3E-6B2A-6702-2F01-000000000E00}</Data>
+    <Data Name="ProcessId">6700</Data>
+    <Data Name="Image">C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe</Data>
+    <Data Name="TargetFilename">C:\Users\alice\AppData\Local\Temp\update.ps1</Data>
+    <Data Name="CreationUtcTime">2026-10-06 08:21:14.000</Data>
+    <Data Name="User">LAB\alice</Data>
+  </EventData>
+</Event>

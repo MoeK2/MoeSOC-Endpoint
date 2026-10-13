@@ -1,0 +1,28 @@
+# Microsoft Defender detected a threat (Event 1116), correlated with the action Defender
+# took (1117) or failed to take (1118/1119) for the same Detection ID.
+# The verdict is Microsoft Defender's; MoeSOC reports and correlates it.
+rule_id: DET-008
+version: "1.0"
+title: Microsoft Defender Detection
+kind: detection
+severity: MEDIUM     # per finding: from Defender's severity; HIGH if remediation failed or was allowed
+confidence: HIGH     # that Defender recorded this detection (not MoeSOC's own malware verdict)
+description: >-
+  Microsoft Defender detected a threat and recorded it in its Operational log.
+  The finding shows the threat name, the affected file or process, the user,
+  and whether Defender's remediation (quarantine, removal, block) succeeded,
+  failed, or has not been recorded yet. MoeSOC does not judge the file itself.
+mitre: []  # Defender's threat name is the classification; no single ATT&CK technique applies
+parameters:
+  event_ids: [1116, 1117, 1118, 1119]
+  # Defender events of earlier scans are joined by Detection ID up to this far back.
+  partner_lookback_days: 7
+false_positives:
+  - Test files such as the EICAR test file
+  - Potentially unwanted applications or hacking tools installed on purpose by an administrator
+  - Defender false positives on new or unsigned software (check the threat name and file)
+recommended_investigation:
+  - Was the remediation successful? A failed or allowed action means the threat may still be present
+  - Which process and user brought the file in, and from where (download, USB, network share)?
+  - Check the process tree and the events around the detection time on this computer
+  - Look up the threat name in Microsoft's threat encyclopedia

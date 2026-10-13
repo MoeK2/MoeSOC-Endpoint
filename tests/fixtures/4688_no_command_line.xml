@@ -1,0 +1,35 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-a5ba-3e3b0328c30d}" />
+    <EventID>4688</EventID>
+    <Version>2</Version>
+    <Level>0</Level>
+    <Task>13312</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8020000000000000</Keywords>
+    <TimeCreated SystemTime="2026-10-06T08:21:10.0000000Z" />
+    <EventRecordID>100241</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="4" ThreadID="1880" />
+    <Channel>Security</Channel>
+    <Computer>WS-LAB01.lab.example</Computer>
+    <Security />
+  </System>
+  <EventData>
+    <Data Name="SubjectUserSid">S-1-5-21-1111111111-2222222222-3333333333-1104</Data>
+    <Data Name="SubjectUserName">Alice</Data>
+    <Data Name="SubjectDomainName">LAB</Data>
+    <Data Name="SubjectLogonId">0x5a3f21</Data>
+    <Data Name="NewProcessId">0x1a2c</Data>
+    <Data Name="NewProcessName">C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe</Data>
+    <Data Name="TokenElevationType">%%1937</Data>
+    <Data Name="ProcessId">0x2f04</Data>
+    <Data Name="CommandLine"></Data>
+    <Data Name="TargetUserSid">S-1-0-0</Data>
+    <Data Name="TargetUserName">-</Data>
+    <Data Name="TargetDomainName">-</Data>
+    <Data Name="TargetLogonId">0x0</Data>
+    <Data Name="ParentProcessName">C:\Windows\System32\cmd.exe</Data>
+    <Data Name="MandatoryLabel">S-1-16-12288</Data>
+  </EventData>
+</Event>

@@ -1,0 +1,6 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" />
+    <EventID>4625</EventID>
+    <TimeCreated SystemTime="2026-10-06T09:00:00Z" />
+    <EventRecordID>100301

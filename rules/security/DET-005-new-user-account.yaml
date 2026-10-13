@@ -1,0 +1,31 @@
+# Every new user account (Event 4720). Account creation is routine administration;
+# this is an awareness finding whose severity rises only with explainable context.
+rule_id: DET-005
+version: "1.0"
+title: New User Account Created
+kind: detection
+severity: LOW        # raised to MEDIUM by context (see parameters)
+confidence: HIGH     # high that the account was created: Windows recorded it
+description: >-
+  A new user account was created on this computer. This is normal administrative
+  work in most cases. It matters when nobody expected it, when the name is made
+  to look hidden, or when the account is given administrator rights soon after
+  (see COR-002).
+mitre:
+  - id: T1136.001
+    name: "Create Account: Local Account"
+    tactic: Persistence
+parameters:
+  event_id: 4720
+  # A user account name ending in "$" is hidden from "net user" listings and
+  # imitates computer accounts (which are created with Event 4741, not 4720).
+  hidden_name_raises_to: MEDIUM
+false_positives:
+  - An administrator creating an account for a new user or service
+  - Software installers that create a dedicated local service account
+  - Provisioning or imaging tools
+recommended_investigation:
+  - Confirm with the person who created it (see "Created by") that it was planned
+  - Check whether the account was added to a group soon afterwards (DET-006, COR-002)
+  - Review the creator's logon session (logon ID) for other activity
+  - Check whether the new account has logged on, and from where

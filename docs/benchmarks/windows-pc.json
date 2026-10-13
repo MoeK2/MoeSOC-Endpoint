@@ -1,0 +1,117 @@
+{
+  "machine": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.15",
+    "processor": "Intel64 Family 6 Model 191 Stepping 2, GenuineIntel",
+    "cpu_count": 16,
+    "moesoc": "1.0.0",
+    "measured_at": "2026-10-08 06:29 UTC",
+    "note": "Real timings on synthetic events; host name intentionally not recorded."
+  },
+  "results": [
+    {
+      "events": 1000,
+      "stored": 1000,
+      "findings": 2,
+      "search_totals": [
+        443,
+        993,
+        7
+      ],
+      "story_steps": 2,
+      "report_bytes": 5393,
+      "db_mb": 1.9,
+      "seconds": {
+        "parse": 0.049,
+        "store": 0.031,
+        "detect": 0.055,
+        "search": 0.015,
+        "story": 0.002,
+        "report": 0.002
+      },
+      "events_per_second": {
+        "parse": 20497,
+        "store": 31948,
+        "detect": 18162
+      }
+    },
+    {
+      "events": 10000,
+      "stored": 10000,
+      "findings": 10,
+      "search_totals": [
+        4435,
+        9965,
+        35
+      ],
+      "story_steps": 2,
+      "report_bytes": 5396,
+      "db_mb": 17.6,
+      "seconds": {
+        "parse": 0.5,
+        "store": 0.319,
+        "detect": 0.562,
+        "search": 0.062,
+        "story": 0.003,
+        "report": 0.003
+      },
+      "events_per_second": {
+        "parse": 20000,
+        "store": 31374,
+        "detect": 17795
+      }
+    },
+    {
+      "events": 50000,
+      "stored": 50000,
+      "findings": 50,
+      "search_totals": [
+        22175,
+        49825,
+        175
+      ],
+      "story_steps": 3,
+      "report_bytes": 5556,
+      "db_mb": 87.7,
+      "seconds": {
+        "parse": 2.534,
+        "store": 2.165,
+        "detect": 3.181,
+        "search": 0.247,
+        "story": 0.005,
+        "report": 0.005
+      },
+      "events_per_second": {
+        "parse": 19730,
+        "store": 23090,
+        "detect": 15719
+      }
+    },
+    {
+      "events": 100000,
+      "stored": 100000,
+      "findings": 104,
+      "search_totals": [
+        44350,
+        99650,
+        350
+      ],
+      "story_steps": 3,
+      "report_bytes": 5565,
+      "db_mb": 176.0,
+      "seconds": {
+        "parse": 5.104,
+        "store": 5.391,
+        "detect": 7.07,
+        "search": 0.415,
+        "story": 0.008,
+        "report": 0.007
+      },
+      "events_per_second": {
+        "parse": 19591,
+        "store": 18550,
+        "detect": 14144
+      }
+    }
+  ]
+}

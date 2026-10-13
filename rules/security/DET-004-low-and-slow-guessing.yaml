@@ -1,0 +1,51 @@
+# Low-and-slow authentication guessing: failures spread out to stay under DET-001's
+# 5-in-5-minutes threshold and under account lockout.
+#
+# Why these defaults:
+# - Windows 11 (and Windows 10 with 2022+ updates) ships with account lockout at
+#   10 invalid attempts per 10 minutes. A careful attacker stays below it and below
+#   DET-001 (5 in 5 min), e.g. one guess every 5-6 minutes.
+# - 10 failures for ONE account inside 60 minutes catches that pace (>= 1 per 6 min)
+#   while a person mistyping a password rarely reaches 10 failures in an hour.
+# - From ONE source against SEVERAL accounts, 15 failures in 60 minutes, below
+#   DET-002's 5 distinct accounts in 30 minutes, catches slow rotation over a few
+#   accounts. Single-account sources are left to the identity mode (no duplicates).
+# - Failures already inside a DET-001 burst (or a DET-002 window, for the source
+#   mode) are excluded: they are reported there; DET-004 reports the slow remainder.
+rule_id: DET-004
+version: "1.0"
+title: Low-and-Slow Authentication Guessing
+kind: detection
+severity: MEDIUM
+confidence: LOW   # steady failures are very often stale saved credentials
+description: >-
+  Repeated authentication failures were spread over a longer period, below the
+  short-burst threshold of DET-001. This pace is consistent with password
+  guessing that avoids lockout, but it is just as typical of a device or service
+  that keeps retrying an old saved password. The regular interval in the
+  evidence helps tell automated retries from a person.
+mitre:
+  - id: T1110
+    name: Brute Force
+    tactic: Credential Access
+  - id: T1110.001
+    name: "Brute Force: Password Guessing"
+    tactic: Credential Access
+parameters:
+  event_id: 4625
+  identity_threshold: 10        # failures for one account...
+  window_minutes: 60            # ...within this rolling window (both modes)
+  source_threshold: 15          # failures from one source over 2+ accounts...
+  source_min_accounts: 2        # (single-account sources belong to identity mode)
+  ignore_machine_accounts: true # HOST$ failures are usually a broken secure channel
+false_positives:
+  - Phone, tablet or mail client retrying a recently changed password
+  - Mapped drive, scheduled task or service configured with an old password
+  - Monitoring or backup tool with expired credentials
+  - Authorized security testing
+recommended_investigation:
+  - Look at the cadence; a fixed interval (for example every 300 s) suggests a device or script
+  - Check the failure reason; "account does not exist" points at guessing or enumeration
+  - Identify the source workstation and address; is it one of the user's own devices?
+  - Check whether the password was changed recently
+  - Look for a later successful logon for the same account or from the same source

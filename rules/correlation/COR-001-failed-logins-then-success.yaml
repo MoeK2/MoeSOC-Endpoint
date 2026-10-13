@@ -1,0 +1,33 @@
+rule_id: COR-001
+version: "2.2"   # 2.0: identity + confidence; 2.1: domain aliases; 2.2: privileged-session context
+title: Possible Account Compromise
+kind: correlation
+severity: HIGH
+confidence: MEDIUM   # default only: each finding derives its own confidence (see docs/detections.md)
+description: >-
+  A successful logon followed a burst of failed logons for the same account.
+  This sequence is consistent with a password-guessing attempt that eventually
+  succeeded, but it is also what a user who finally remembers their password
+  looks like. Correlating the two events is stronger evidence than either alone,
+  and it is not proof of compromise.
+mitre:
+  - id: T1110
+    name: Brute Force
+    tactic: Credential Access
+  - id: T1078
+    name: Valid Accounts
+    tactic: Initial Access, Persistence, Privilege Escalation, Defense Evasion
+parameters:
+  failure_event_id: 4625
+  success_event_id: 4624
+  threshold: 5           # failures required before the success...
+  window_minutes: 10     # ...counted within this window ending at the success
+false_positives:
+  - User mistyped the password several times, then succeeded
+  - Service or scheduled task updated with the new password after failing
+  - Administrator testing an account
+recommended_investigation:
+  - Compare the source address of the failures with the source of the success
+  - Check the logon type of the success (interactive, network, RDP)
+  - Review what the new session did next (process creation, privilege use)
+  - Confirm with the account owner; reset the password if the activity is not explained

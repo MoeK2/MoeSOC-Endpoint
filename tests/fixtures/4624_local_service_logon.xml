@@ -1,0 +1,29 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-a5ba-3e3b0328c30d}" />
+    <EventID>4624</EventID>
+    <Version>2</Version>
+    <TimeCreated SystemTime="2026-10-06T07:00:00.0000000Z" />
+    <EventRecordID>100001</EventRecordID>
+    <Channel>Security</Channel>
+    <Computer>WS-LAB01.lab.example</Computer>
+  </System>
+  <EventData>
+    <Data Name="SubjectUserSid">S-1-5-18</Data>
+    <Data Name="SubjectUserName">WS-LAB01$</Data>
+    <Data Name="SubjectDomainName">LAB</Data>
+    <Data Name="SubjectLogonId">0x3e7</Data>
+    <Data Name="TargetUserSid">S-1-5-18</Data>
+    <Data Name="TargetUserName">SYSTEM</Data>
+    <Data Name="TargetDomainName">NT AUTHORITY</Data>
+    <Data Name="TargetLogonId">0x3e7</Data>
+    <Data Name="LogonType">5</Data>
+    <Data Name="LogonProcessName">Advapi  </Data>
+    <Data Name="AuthenticationPackageName">Negotiate</Data>
+    <Data Name="WorkstationName">-</Data>
+    <Data Name="ProcessId">0x2c0</Data>
+    <Data Name="ProcessName">C:\Windows\System32\services.exe</Data>
+    <Data Name="IpAddress">-</Data>
+    <Data Name="IpPort">-</Data>
+  </EventData>
+</Event>

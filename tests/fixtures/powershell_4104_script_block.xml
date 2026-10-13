@@ -1,0 +1,25 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-PowerShell" Guid="{a0c1853b-5c40-4b15-8766-3cf1c58f985a}" />
+    <EventID>4104</EventID>
+    <Version>1</Version>
+    <Level>5</Level>
+    <Task>2</Task>
+    <Opcode>15</Opcode>
+    <Keywords>0x0</Keywords>
+    <TimeCreated SystemTime="2026-10-06T08:21:20.0000000Z" />
+    <EventRecordID>7001</EventRecordID>
+    <Correlation ActivityID="{0b3a5c20-0000-0000-0000-000000000000}" />
+    <Execution ProcessID="6700" ThreadID="5120" />
+    <Channel>Microsoft-Windows-PowerShell/Operational</Channel>
+    <Computer>WS-LAB01.lab.example</Computer>
+    <Security UserID="S-1-5-21-1111111111-2222222222-3333333333-1104" />
+  </System>
+  <EventData>
+    <Data Name="MessageNumber">1</Data>
+    <Data Name="MessageTotal">1</Data>
+    <Data Name="ScriptBlockText">Get-Service | Where-Object Status -eq 'Running' | Select-Object -First 5</Data>
+    <Data Name="ScriptBlockId">9C2E8D5A-1B4F-4C3D-8E2A-6F1B0D7C9A11</Data>
+    <Data Name="Path"></Data>
+  </EventData>
+</Event>
